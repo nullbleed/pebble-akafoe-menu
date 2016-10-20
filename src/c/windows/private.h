@@ -1,5 +1,5 @@
 #pragma once
-#include<pebble.h>
+#include <pebble.h>
 
 typedef struct {
     TextLayer *title_layer;

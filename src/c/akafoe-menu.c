@@ -1,5 +1,6 @@
 #include <pebble.h>
 
+#include "communication.h"
 #include "windows/main_window.h"
 
 // =============
@@ -8,6 +9,7 @@
 
 // init main window and request update
 static void app_init() {
+    init_message_system();
     main_window_push();
 }
 

@@ -2,9 +2,16 @@
   "name": "akafoe-menu",
   "author": "Nullbleed",
   "version": "1.0.0",
-  "keywords": ["pebble-app", "akafoe", "akafö", "rub"],
+  "keywords": [
+    "pebble-app",
+    "akafoe",
+    "akafö",
+    "rub"
+  ],
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "sax": "^1.2.1"
+  },
   "pebble": {
     "displayName": "AKAFÖ menu",
     "uuid": "44984552-641f-4800-ae36-3de277dfe4d3",
@@ -20,7 +27,7 @@
       "watchface": false
     },
     "messageKeys": [
-      "dummy"
+      "TestKey"
     ],
     "resources": {
       "media": []
