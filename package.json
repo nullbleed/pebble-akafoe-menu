@@ -10,6 +10,7 @@
   ],
   "private": true,
   "dependencies": {
+    "dateformat": "^1.0.12",
     "sax": "^1.2.1"
   },
   "pebble": {
@@ -27,6 +28,8 @@
       "watchface": false
     },
     "messageKeys": [
+      "JSReady",
+      "GetMenu",
       "TestKey"
     ],
     "resources": {

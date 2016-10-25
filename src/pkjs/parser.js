@@ -49,7 +49,7 @@ function AtomParser() {
 
     this._parser.ontext = function(text) {
         if (this._currentTag) {
-            this._currentTag.text = text;
+            this._currentTag.text += text;
         }
     }.bind(this);
 
@@ -80,4 +80,52 @@ AtomParser.prototype.parse = function(text, callback) {
     this._parser.write(text).close();
 };
 
+function parse_entry(entry) {
+    var dateExp = /^.*\/(\d{2}-\d{2}-\d{2})/;
+    var itemExp = /^([^()]+\S)\s+((?:\(.*\)\s+){0,2})([\d,]+)\s*EUR\s*-\s*([\d,]+)\s*EUR$/;
+
+    var menu = {
+        'date': "",
+        'menues': [],
+    };
+
+    for (var i = 0; i < entry.children.length; ++i) {
+        if (entry.children[i].name === "id") { // get date of this entry
+            var id = entry.children[i];
+            menu.date = id.text.replace(dateExp, '$1');
+        } else if (entry.children[i].name === "content") { // get content of this entry
+            var content = entry.children[i].children[0];
+            for (var j = 0; j < content.children.length; ++j) {
+                if (content.children[j].name === "p") { // section header
+                    var p = content.children[j];
+                    menu.menues.push({
+                        'title': p.children[0].text,
+                        'items': [],
+                    });
+                } else if (content.children[j].name === "ul") { // section body
+                    var ul = content.children[j];
+                    for (var k = 0; k < ul.children.length; ++k) {
+                        var li = ul.children[k];
+                        var text = li.text.replace(/\s+/g, ' ').trim();
+                        var match = itemExp.exec(text);
+
+                        if (match === null) {
+                            console.error("Cannot parse menu entry: " + text);
+                        } else {
+                            menu.menues[menu.menues.length - 1].items.push({
+                                'description': match[1].trim(),
+                                'attrs': match[2].trim(),
+                                'price': match[3] + "€ / " + match[4] + "€",
+                            });
+                        }
+                    } // ul.children
+                } // endif
+            } // content.children
+        } // endif
+    } // entry.children
+
+    return menu;
+}
+
 module.exports.AtomParser = AtomParser;
+module.exports.parse_entry = parse_entry;

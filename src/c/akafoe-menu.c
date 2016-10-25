@@ -7,10 +7,18 @@
 // app lifecycle
 // =============
 
+static void pebblekit_ready(bool ready) {
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "PebbleKit changed state to READY.");
+    comm_request_menu(1);
+}
+
 // init main window and request update
 static void app_init() {
     init_message_system();
     main_window_push();
+
+    // DEBUG: check reply on phone
+    comm_register_on_ready(pebblekit_ready);
 }
 
 // deinit main window
